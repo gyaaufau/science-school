@@ -1,21 +1,22 @@
 .panel {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 20px;
+  padding: 24px;
   height: 100%;
   overflow-y: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 14px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .section:last-child {
@@ -24,21 +25,21 @@
 }
 
 .sectionTitle {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #0f172a;
 }
 
 .controlsList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .controlGroup {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .labelRow {
@@ -48,125 +49,138 @@
 }
 
 .label {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: #334155;
 }
 
 .valueBadge {
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-family: monospace;
   font-weight: 700;
-  color: #3b82f6;
-  background: rgba(59, 130, 246, 0.1);
-  padding: 2px 8px;
-  border-radius: 4px;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 4px 10px;
+  border-radius: 6px;
 }
 
 .sliderRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .rangeLimit {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-family: monospace;
   color: #64748b;
+  font-weight: 600;
 }
 
 .slider {
   flex-grow: 1;
-  accent-color: #3b82f6;
+  accent-color: #2563eb;
   cursor: pointer;
+  height: 8px;
 }
 
 .selectInput {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+  min-height: 44px;
   border-radius: 8px;
-  color: #ffffff;
-  font-size: 0.85rem;
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 500;
   outline: none;
+}
+
+.selectInput:focus {
+  border-color: #2563eb;
 }
 
 .toggleRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: #cbd5e1;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #334155;
   cursor: pointer;
 }
 
 .checkbox {
-  accent-color: #3b82f6;
-  width: 16px;
-  height: 16px;
+  accent-color: #2563eb;
+  width: 20px;
+  height: 20px;
 }
 
 .metricsGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 
 .metricCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 12px;
-  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 14px 16px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .metricLabel {
-  font-size: 0.72rem;
-  color: #94a3b8;
+  font-size: 0.8rem;
+  color: #64748b;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .metricValue {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-family: monospace;
-  font-weight: 700;
-  color: #10b981;
+  font-weight: 800;
+  color: #059669;
 }
 
 .metricUnit {
-  font-size: 0.78rem;
-  color: #94a3b8;
-  font-weight: 400;
+  font-size: 0.88rem;
+  color: #475569;
+  font-weight: 500;
 }
 
 .togglesGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
 .toggleBtn {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #94a3b8;
-  font-size: 0.78rem;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  font-size: 0.85rem;
   font-weight: 600;
-  padding: 8px 4px;
-  border-radius: 6px;
+  padding: 10px 8px;
+  min-height: 42px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
 }
 
 .toggleBtn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: #e2e8f0;
+  color: #0f172a;
 }
 
 .toggleActive {
-  background: rgba(59, 130, 246, 0.15) !important;
-  border-color: #3b82f6 !important;
-  color: #ffffff !important;
+  background: #eff6ff !important;
+  border-color: #2563eb !important;
+  color: #1d4ed8 !important;
 }

@@ -1,36 +1,38 @@
 .container {
-  padding: 8px 24px;
-  background: #07090e;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .desktopTabs {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .simTabBtn {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 6px 16px;
-  border-radius: 6px;
-  color: #94a3b8;
-  font-size: 0.85rem;
-  font-weight: 500;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 8px 18px;
+  min-height: 40px;
+  border-radius: 8px;
+  color: #334155;
+  font-size: 0.92rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .simTabBtn:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+  color: #0f172a;
+  background: #e2e8f0;
 }
 
 .activeSim {
-  background: rgba(59, 130, 246, 0.15) !important;
-  border-color: #3b82f6 !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
+  background: #eff6ff !important;
+  border-color: #2563eb !important;
+  color: #1d4ed8 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15);
 }
 
 .mobileSelectWrapper {
@@ -39,12 +41,12 @@
 
 .mobileSelect {
   width: 100%;
-  padding: 8px 12px;
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  border-radius: 6px;
-  font-size: 0.88rem;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  border-radius: 8px;
+  font-size: 0.95rem;
   outline: none;
 }
 
