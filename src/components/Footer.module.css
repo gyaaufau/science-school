@@ -1,0 +1,148 @@
+.footer {
+  background: #04060a;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 64px 24px 32px;
+  color: var(--text-secondary);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.topSection {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+.brandInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoBadge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(0, 242, 254, 0.15);
+  border: 1px solid var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandName {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+}
+
+.brandDesc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.linksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.linkCol {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.colTitle {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.linkCol a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.linkCol a:hover {
+  color: var(--accent-cyan);
+}
+
+.newsletterText {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.emailInput {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+}
+
+.emailInput:focus {
+  border-color: var(--accent-cyan);
+}
+
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 24px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.statusPill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 242, 254, 0.05);
+  border: 1px solid rgba(0, 242, 254, 0.15);
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+@media (max-width: 900px) {
+  .topSection {
+    grid-template-columns: 1fr;
+  }
+  .linksGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

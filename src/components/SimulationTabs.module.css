@@ -1,0 +1,58 @@
+.container {
+  padding: 8px 24px;
+  background: #07090e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.desktopTabs {
+  display: flex;
+  gap: 8px;
+}
+
+.simTabBtn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 16px;
+  border-radius: 6px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.simTabBtn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.activeSim {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-color: #3b82f6 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.mobileSelectWrapper {
+  display: none;
+}
+
+.mobileSelect {
+  width: 100%;
+  padding: 8px 12px;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .desktopTabs {
+    display: none;
+  }
+  .mobileSelectWrapper {
+    display: block;
+  }
+}
