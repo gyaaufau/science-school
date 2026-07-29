@@ -1,121 +1,83 @@
 .header {
+  height: var(--sizing-header_height, 72px);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 16px 32px;
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  gap: 16px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 28px;
+  user-select: none;
 }
 
 .brandGroup {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .logoBadge {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--primary-subtle);
+  border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
+  font-size: 20px;
 }
 
-.title {
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #0f172a;
-  line-height: 1.2;
-}
-
-.subtitle {
-  font-size: 0.88rem;
-  color: #475569;
-  font-weight: 500;
-}
-
-.controlsGroup {
+.titleGroup {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.gradeSelector {
-  display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 6px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  padding: 4px;
-  border-radius: 10px;
 }
 
-.gradeLabel {
-  font-size: 0.88rem;
-  color: #334155;
-  padding: 0 8px;
-  font-weight: 600;
-}
-
-.gradeBtn {
-  background: transparent;
-  border: none;
-  color: #475569;
-  font-size: 0.88rem;
+.brandName {
+  font-size: 20px;
   font-weight: 700;
-  padding: 8px 18px;
-  min-height: 38px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1;
 }
 
-.gradeBtn:hover {
-  color: #0f172a;
-  background: #e2e8f0;
-}
-
-.activeGrade {
-  background: #2563eb !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
-}
-
-.toolBtn {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: #0f172a;
-  font-size: 0.9rem;
+.brandSub {
+  font-size: 12px;
   font-weight: 600;
-  padding: 8px 18px;
-  min-height: 44px;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
+  color: var(--primary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.toolBtn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-}
-
-.activePredict {
-  background: #fef3c7 !important;
-  border-color: #d97706 !important;
-  color: #92400e !important;
+.actionsGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .activePresent {
-  background: #d1fae5 !important;
-  border-color: #059669 !important;
-  color: #065f46 !important;
+  background: var(--primary-subtle) !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+.iconBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.iconBtn:hover {
+  background: var(--surface-subtle);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
 }

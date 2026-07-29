@@ -24,35 +24,34 @@ export default function SimulationStage({
   showLabels,
   showVectors,
 }: SimulationStageProps) {
+  const renderStageContent = () => {
+    switch (simulationId) {
+      case "force-motion":
+        return <ForceMotionStage data={data} showLabels={showLabels} showVectors={showVectors} />;
+      case "energy":
+        return <EnergyStage data={data} showLabels={showLabels} showVectors={showVectors} />;
+      case "photosynthesis":
+        return <PhotosynthesisStage data={data} showLabels={showLabels} />;
+      case "membrane-transport":
+        return <MembraneTransportStage data={data} showLabels={showLabels} />;
+      case "acid-base":
+        return <AcidBaseStage data={data} showLabels={showLabels} />;
+      case "state-change":
+        return <StateChangeStage data={data} showLabels={showLabels} />;
+      default:
+        return <ForceMotionStage data={data} showLabels={showLabels} showVectors={showVectors} />;
+    }
+  };
+
   return (
     <div className={styles.stageWrapper}>
-      {/* Predict Banner Overlay */}
       {predictMode && (
         <div className={styles.predictBanner}>
-          <span>❓ Mode Prediksi Aktif:</span>
-          <span>&quot;Apa prediksi kalian sebelum simulasi dijalankan?&quot;</span>
+          <span>💡 Apa prediksi kalian sebelum simulasi dijalankan?</span>
         </div>
       )}
 
-      {/* Dynamic Simulation Stage Dispatcher */}
-      {(() => {
-        switch (simulationId) {
-          case "force-motion":
-            return <ForceMotionStage data={data} showLabels={showLabels} showVectors={showVectors} />;
-          case "energy":
-            return <EnergyStage data={data} showLabels={showLabels} showVectors={showVectors} />;
-          case "photosynthesis":
-            return <PhotosynthesisStage data={data} showLabels={showLabels} />;
-          case "membrane-transport":
-            return <MembraneTransportStage data={data} showLabels={showLabels} />;
-          case "acid-base":
-            return <AcidBaseStage data={data} showLabels={showLabels} />;
-          case "state-change":
-            return <StateChangeStage data={data} showLabels={showLabels} />;
-          default:
-            return <ForceMotionStage data={data} showLabels={showLabels} showVectors={showVectors} />;
-        }
-      })()}
+      {renderStageContent()}
     </div>
   );
 }

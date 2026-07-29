@@ -10,8 +10,6 @@ interface TeacherToolsProps {
   onApplyPreset: (preset: Preset) => void;
   discussion: DiscussionContent;
   concept: ConceptContent;
-  showFormula: boolean;
-  onToggleFormula: () => void;
   currentInputs: Record<string, any>;
   currentMetrics: Record<string, any>;
   comparisonA: ComparisonSnapshot | null;
@@ -20,62 +18,52 @@ interface TeacherToolsProps {
 }
 
 export default function TeacherTools({
-  grade,
   presets,
   onApplyPreset,
   discussion,
   concept,
-  showFormula,
-  onToggleFormula,
-  currentInputs,
   currentMetrics,
   comparisonA,
   onSaveComparisonA,
   onClearComparison,
 }: TeacherToolsProps) {
-  const [activeTab, setActiveTab] = useState<"presets" | "discussion" | "concept" | "compare">("presets");
+  const [activeTab, setActiveTab] = useState<"presets" | "concept" | "compare">("presets");
 
   return (
-    <div className={styles.container}>
-      {/* Tab Selectors */}
-      <div className={styles.tabHeaders}>
+    <div className={styles.teachingPanel}>
+      {/* Internal Tabs Bar */}
+      <div className={styles.tabBar}>
         <button
           onClick={() => setActiveTab("presets")}
           className={`${styles.tabBtn} ${activeTab === "presets" ? styles.activeTab : ""}`}
         >
-          ⚡ Preset Eksperimen ({presets.length})
-        </button>
-        <button
-          onClick={() => setActiveTab("discussion")}
-          className={`${styles.tabBtn} ${activeTab === "discussion" ? styles.activeTab : ""}`}
-        >
-          💬 Pertanyaan Diskusi
+          Preset & Panduan
         </button>
         <button
           onClick={() => setActiveTab("concept")}
           className={`${styles.tabBtn} ${activeTab === "concept" ? styles.activeTab : ""}`}
         >
-          📖 Konsep & Rumus
+          Konsep & Diskusi
         </button>
         <button
           onClick={() => setActiveTab("compare")}
           className={`${styles.tabBtn} ${activeTab === "compare" ? styles.activeTab : ""}`}
         >
-          ⚖️ Compare Mode {comparisonA ? "(Tersimpan A)" : ""}
+          Bandingkan {comparisonA ? "(Tersimpan A)" : ""}
         </button>
       </div>
 
-      {/* Tab Content Box */}
-      <div className={styles.tabBody}>
-        {/* Presets */}
+      {/* Tab Body Content */}
+      <div className={styles.panelBody}>
+        {/* Presets & Panduan */}
         {activeTab === "presets" && (
-          <div className={styles.presetsGrid}>
+          <div className={styles.presetsRow}>
             {presets.map((p) => (
               <div key={p.id} className={styles.presetCard}>
-                <div className={styles.presetHeader}>
-                  <h4 className={styles.presetTitle}>{p.title}</h4>
-                  <button onClick={() => onApplyPreset(p)} className={styles.applyBtn}>
-                    Gunakan Preset ➔
+                <div className={styles.presetTop}>
+                  <span className={styles.presetTitle}>{p.title}</span>
+                  <button onClick={() => onApplyPreset(p)} className="btn-secondary" style={{ padding: "4px 10px", minHeight: "32px", fontSize: "12px" }}>
+                    Muat Variable
                   </button>
                 </div>
                 <p className={styles.presetDesc}>{p.description}</p>
@@ -84,70 +72,45 @@ export default function TeacherTools({
           </div>
         )}
 
-        {/* Discussion Questions */}
-        {activeTab === "discussion" && (
-          <div className={styles.discussionBox}>
-            <div className={styles.qCard}>
-              <span className={styles.qBadge}>1. Prediksi (Sebelum)</span>
-              <p className={styles.qText}>{discussion.predict}</p>
-            </div>
-            <div className={styles.qCard}>
-              <span className={styles.qBadge}>2. Observasi (Saat Simulasi)</span>
-              <p className={styles.qText}>{discussion.observe}</p>
-            </div>
-            <div className={styles.qCard}>
-              <span className={styles.qBadge}>3. Kesimpulan (Setelah)</span>
-              <p className={styles.qText}>{discussion.conclude}</p>
-            </div>
-          </div>
-        )}
-
-        {/* Concept & Formula */}
+        {/* Konsep */}
         {activeTab === "concept" && (
-          <div className={styles.conceptBox}>
-            <div className={styles.summaryBox}>
-              <h4 className={styles.conceptTitle}>Ringkasan Konsep Edutainment ({grade.toUpperCase()})</h4>
-              <p className={styles.conceptSummary}>{concept.summary}</p>
+          <div className={styles.conceptGrid}>
+            <div className={styles.conceptCard}>
+              <h4 className={styles.cardHeading}>Ringkasan Konsep</h4>
+              <p className={styles.cardText}>{concept.summary}</p>
             </div>
-
-            {concept.formulaText && (
-              <div className={styles.formulaBox}>
-                <div className={styles.formulaHeader}>
-                  <h4 className={styles.conceptTitle}>Persamaan Matematis / Model</h4>
-                  <button onClick={onToggleFormula} className={styles.toggleFormulaBtn}>
-                    {showFormula ? "Sembunyikan" : "Tampilkan"}
-                  </button>
-                </div>
-                {(showFormula || grade === "sma") && (
-                  <div className={styles.formulaCode}>{concept.formulaText}</div>
-                )}
-              </div>
-            )}
+            <div className={styles.conceptCard}>
+              <h4 className={styles.cardHeading}>Pertanyaan Diskusi Kelas</h4>
+              <ul className={styles.discussionList}>
+                <li><strong>Prediksi:</strong> {discussion.predict}</li>
+                <li><strong>Observasi:</strong> {discussion.observe}</li>
+                <li><strong>Kesimpulan:</strong> {discussion.conclude}</li>
+              </ul>
+            </div>
           </div>
         )}
 
-        {/* Compare Mode */}
+        {/* Bandingkan */}
         {activeTab === "compare" && (
-          <div className={styles.compareBox}>
-            <div className={styles.compareActions}>
-              <button onClick={onSaveComparisonA} className={styles.saveABtn}>
-                📌 Simpan Kondisi Saat Ini sebagai Percobaan A
+          <div className={styles.compareContainer}>
+            <div className={styles.compareHeaderRow}>
+              <button onClick={onSaveComparisonA} className="btn-primary" style={{ minHeight: "36px", fontSize: "13px" }}>
+                Simpan sebagai Percobaan A
               </button>
               {comparisonA && (
-                <button onClick={onClearComparison} className={styles.clearBtn}>
-                  🗑️ Reset Comparison
+                <button onClick={onClearComparison} className="btn-secondary" style={{ minHeight: "36px", fontSize: "13px" }}>
+                  Reset Perbandingan
                 </button>
               )}
             </div>
 
             {comparisonA ? (
               <div className={styles.tableWrapper}>
-                <h4 className={styles.tableTitle}>Tabel Perbandingan Experiment A vs B</h4>
                 <table className={styles.compareTable}>
                   <thead>
                     <tr>
                       <th>Parameter Metrik</th>
-                      <th>Percobaan A (Tersimpan)</th>
+                      <th>Percobaan A</th>
                       <th>Percobaan B (Saat Ini)</th>
                       <th>Perubahan</th>
                     </tr>
@@ -157,20 +120,24 @@ export default function TeacherTools({
                       const valA = comparisonA.metrics[key];
                       const valB = currentMetrics[key];
 
-                      let change = "Konstan";
+                      let change = "tetap";
                       if (typeof valA === "number" && typeof valB === "number") {
-                        if (valB > valA) change = "⬆️ Naik";
-                        else if (valB < valA) change = "⬇️ Turun";
+                        if (valB > valA) change = "naik";
+                        else if (valB < valA) change = "turun";
                       } else if (valA !== valB) {
-                        change = "🔀 Berubah";
+                        change = "berubah";
                       }
 
                       return (
                         <tr key={key}>
-                          <td className={styles.paramName}>{key}</td>
-                          <td className={styles.valCol}>{valA !== undefined ? String(valA) : "—"}</td>
-                          <td className={styles.valCol}>{valB !== undefined ? String(valB) : "—"}</td>
-                          <td className={styles.changeCol}>{change}</td>
+                          <td className={styles.paramCell}>{key}</td>
+                          <td className="tabular-nums">{valA !== undefined ? String(valA) : "—"}</td>
+                          <td className="tabular-nums">{valB !== undefined ? String(valB) : "—"}</td>
+                          <td className={styles.statusCell}>
+                            <span className={`${styles.statusBadge} ${styles[change] || ""}`}>
+                              {change}
+                            </span>
+                          </td>
                         </tr>
                       );
                     })}
@@ -179,7 +146,7 @@ export default function TeacherTools({
               </div>
             ) : (
               <p className={styles.compareHint}>
-                💡 Belum ada data Percobaan A tersimpan. Atur variabel lalu klik tombol &quot;Simpan Kondisi Saat Ini sebagai Percobaan A&quot; di atas.
+                Atur variabel simulasi, lalu klik &quot;Simpan sebagai Percobaan A&quot; untuk mulai membandingkan dua kondisi eksperimen.
               </p>
             )}
           </div>

@@ -2,15 +2,26 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { AppState, ComparisonSnapshot, GradeId, Preset, SubjectId } from "@/types/simulation";
-import { ALL_SIMULATIONS, SUBJECT_SIMULATIONS } from "@/data/simulations";
+import { ALL_SIMULATIONS } from "@/data/simulations";
 import Header from "./Header";
-import SubjectTabs from "./SubjectTabs";
-import SimulationTabs from "./SimulationTabs";
+import Sidebar from "./Sidebar";
+import PageHeading from "./PageHeading";
 import SimulationStage from "./SimulationStage";
-import ControlPanel from "./ControlPanel";
+import ResultsReadouts from "./ResultsReadouts";
+import InspectorPanel from "./InspectorPanel";
 import PlaybackBar from "./PlaybackBar";
 import TeacherTools from "./TeacherTools";
 import styles from "./ScienceLabApp.module.css";
+
+// Simulation Default Grades Mapping
+const SIMULATION_TARGET_GRADES: Record<string, GradeId> = {
+  "force-motion": "smp",
+  energy: "sma",
+  photosynthesis: "sd",
+  "membrane-transport": "sma",
+  "acid-base": "smp",
+  "state-change": "sd",
+};
 
 export default function ScienceLabApp() {
   const [appState, setAppState] = useState<AppState>({
@@ -33,13 +44,14 @@ export default function ScienceLabApp() {
   const lastTimeRef = useRef<number | null>(null);
 
   const activeSimDef = ALL_SIMULATIONS[appState.activeSimulation] || ALL_SIMULATIONS["force-motion"];
-  const currentGradeConfig = activeSimDef.gradeConfigs[appState.activeGrade];
+  const currentGrade = SIMULATION_TARGET_GRADES[appState.activeSimulation] || appState.activeGrade;
+  const currentGradeConfig = activeSimDef.gradeConfigs[currentGrade];
 
   // Get or initialize inputs for active simulation
   const currentInputs = appState.simulationInputs[appState.activeSimulation] || currentGradeConfig.defaultValues;
 
   // Perform calculation
-  const calculatedResult = activeSimDef.calculate(currentInputs, appState.elapsedTime, appState.activeGrade);
+  const calculatedResult = activeSimDef.calculate(currentInputs, appState.elapsedTime, currentGrade);
 
   // Animation Loop Tick
   const animate = useCallback((time: number) => {
@@ -70,40 +82,18 @@ export default function ScienceLabApp() {
     };
   }, [appState.isPlaying, animate]);
 
-  // Handlers
-  const handleSubjectChange = (subject: SubjectId) => {
-    const firstSim = SUBJECT_SIMULATIONS[subject][0].id;
+  // Select simulation from LMS Sidebar
+  const handleSelectSimulation = (subject: SubjectId, simId: string) => {
+    const targetGrade = SIMULATION_TARGET_GRADES[simId] || "smp";
     setAppState((prev) => ({
       ...prev,
       activeSubject: subject,
-      activeSimulation: firstSim,
-      isPlaying: false,
-      elapsedTime: 0,
-    }));
-  };
-
-  const handleSimulationChange = (simId: string) => {
-    setAppState((prev) => ({
-      ...prev,
       activeSimulation: simId,
+      activeGrade: targetGrade,
       isPlaying: false,
       elapsedTime: 0,
-    }));
-  };
-
-  const handleGradeChange = (grade: GradeId) => {
-    const targetSimDef = ALL_SIMULATIONS[appState.activeSimulation];
-    const newDefaults = targetSimDef.gradeConfigs[grade].defaultValues;
-
-    setAppState((prev) => ({
-      ...prev,
-      activeGrade: grade,
-      elapsedTime: 0,
-      showFormula: grade === "sma", // Default formula open on SMA
-      simulationInputs: {
-        ...prev.simulationInputs,
-        [prev.activeSimulation]: newDefaults,
-      },
+      showFormula: targetGrade === "sma",
+      comparisonA: null,
     }));
   };
 
@@ -135,7 +125,7 @@ export default function ScienceLabApp() {
   const handleSaveComparisonA = () => {
     const snapshot: ComparisonSnapshot = {
       simulationId: appState.activeSimulation,
-      grade: appState.activeGrade,
+      grade: currentGrade,
       timestamp: new Date().toLocaleTimeString(),
       inputs: { ...currentInputs },
       metrics: { ...calculatedResult.metrics },
@@ -157,87 +147,101 @@ export default function ScienceLabApp() {
 
   return (
     <div className={`${styles.appShell} ${appState.presentationMode ? styles.presentationModeActive : ""}`}>
-      {/* Top Header */}
+      {/* Top Header (72px) */}
       <Header
-        activeGrade={appState.activeGrade}
-        onGradeChange={handleGradeChange}
         presentationMode={appState.presentationMode}
         onTogglePresentation={() => setAppState((p) => ({ ...p, presentationMode: !p.presentationMode }))}
-        predictMode={appState.predictMode}
-        onTogglePredict={() => setAppState((p) => ({ ...p, predictMode: !p.predictMode }))}
       />
 
-      {/* Global Subject & Simulation Tabs */}
-      <SubjectTabs activeSubject={appState.activeSubject} onSubjectChange={handleSubjectChange} />
-      <SimulationTabs
-        activeSubject={appState.activeSubject}
-        activeSimulation={appState.activeSimulation}
-        onSimulationChange={handleSimulationChange}
-      />
-
-      {/* Main Workspace Grid (65% Stage, 35% Control Panel) */}
-      <main className={styles.workspace}>
-        {/* Simulation Stage Viewport */}
-        <div className={styles.stageContainer}>
-          <SimulationStage
-            simulationId={appState.activeSimulation}
-            data={calculatedResult.stageData}
-            predictMode={appState.predictMode}
-            showLabels={appState.showLabels}
-            showVectors={appState.showVectors}
-          />
-        </div>
-
-        {/* Control Panel (Variables & Observations) */}
+      {/* App Body Container (Sidebar LMS + Main Workspace) */}
+      <div className={styles.bodyContainer}>
+        {/* Left LMS Sidebar (256px) */}
         {!appState.presentationMode && (
-          <div className={styles.controlPanelContainer}>
-            <ControlPanel
-              grade={appState.activeGrade}
-              variables={currentGradeConfig.variables}
-              inputs={currentInputs}
-              onInputChange={handleInputChange}
-              metrics={activeSimDef.metrics[appState.activeGrade]}
-              calculatedMetrics={calculatedResult.metrics}
-              predictMode={appState.predictMode}
-              showFormula={appState.showFormula}
-              onToggleFormula={() => setAppState((p) => ({ ...p, showFormula: !p.showFormula }))}
-              showLabels={appState.showLabels}
-              onToggleLabels={() => setAppState((p) => ({ ...p, showLabels: !p.showLabels }))}
-              showVectors={appState.showVectors}
-              onToggleVectors={() => setAppState((p) => ({ ...p, showVectors: !p.showVectors }))}
-            />
-          </div>
+          <Sidebar
+            activeSubject={appState.activeSubject}
+            activeSimulation={appState.activeSimulation}
+            onSelectSimulation={handleSelectSimulation}
+          />
         )}
-      </main>
 
-      {/* Playback Controls Bar */}
-      <PlaybackBar
-        isPlaying={appState.isPlaying}
-        onTogglePlay={() => setAppState((p) => ({ ...p, isPlaying: !p.isPlaying }))}
-        onStep={handleStep}
-        onReset={handleReset}
-        playbackSpeed={appState.playbackSpeed}
-        onSpeedChange={(speed) => setAppState((p) => ({ ...p, playbackSpeed: speed }))}
-        elapsedTime={appState.elapsedTime}
-      />
+        {/* Main Content Area */}
+        <main className={styles.mainContent}>
+          {/* Page Heading (Title, 1-line description, Grade Badge) */}
+          <PageHeading
+            title={activeSimDef.title}
+            description={activeSimDef.description}
+            grade={currentGrade}
+          />
 
-      {/* Teacher Tools Section (Presets, Questions, Concepts, Compare) */}
-      {!appState.presentationMode && (
-        <TeacherTools
-          grade={appState.activeGrade}
-          presets={activeSimDef.presets}
-          onApplyPreset={handleApplyPreset}
-          discussion={activeSimDef.discussions[appState.activeGrade]}
-          concept={activeSimDef.concepts[appState.activeGrade]}
-          showFormula={appState.showFormula}
-          onToggleFormula={() => setAppState((p) => ({ ...p, showFormula: !p.showFormula }))}
-          currentInputs={currentInputs}
-          currentMetrics={calculatedResult.metrics}
-          comparisonA={appState.comparisonA}
-          onSaveComparisonA={handleSaveComparisonA}
-          onClearComparison={handleClearComparison}
-        />
-      )}
+          {/* Desktop Workspace Grid (Flexible Stage Column | 328px Inspector Column) */}
+          <div className={styles.workspaceGrid}>
+            {/* Left Column: Stage, Results, Playback */}
+            <div className={styles.stageColumn}>
+              <SimulationStage
+                simulationId={appState.activeSimulation}
+                data={calculatedResult.stageData}
+                predictMode={appState.predictMode}
+                showLabels={appState.showLabels}
+                showVectors={appState.showVectors}
+              />
+
+              {/* Results Readouts directly below stage */}
+              <ResultsReadouts
+                metrics={activeSimDef.metrics[currentGrade]}
+                calculatedValues={calculatedResult.metrics}
+                predictMode={appState.predictMode}
+              />
+
+              {/* Playback Controls Bar directly below results */}
+              <PlaybackBar
+                isPlaying={appState.isPlaying}
+                onTogglePlay={() => setAppState((p) => ({ ...p, isPlaying: !p.isPlaying }))}
+                onStep={handleStep}
+                onReset={handleReset}
+                playbackSpeed={appState.playbackSpeed}
+                onSpeedChange={(speed) => setAppState((p) => ({ ...p, playbackSpeed: speed }))}
+              />
+            </div>
+
+            {/* Right Column: Fixed Inspector Panel (328px) */}
+            {!appState.presentationMode && (
+              <InspectorPanel
+                grade={currentGrade}
+                variables={currentGradeConfig.variables}
+                inputs={currentInputs}
+                onInputChange={handleInputChange}
+                formulaText={activeSimDef.concepts[currentGrade]?.formulaText}
+                showFormula={appState.showFormula}
+                onToggleFormula={() => setAppState((p) => ({ ...p, showFormula: !p.showFormula }))}
+                showLabels={appState.showLabels}
+                onToggleLabels={() => setAppState((p) => ({ ...p, showLabels: !p.showLabels }))}
+                showVectors={appState.showVectors}
+                onToggleVectors={() => setAppState((p) => ({ ...p, showVectors: !p.showVectors }))}
+                predictMode={appState.predictMode}
+                onTogglePredictMode={() => setAppState((p) => ({ ...p, predictMode: !p.predictMode }))}
+              />
+            )}
+          </div>
+
+          {/* Bottom Teaching Tools Panel */}
+          {!appState.presentationMode && (
+            <div className={styles.bottomTeachingContainer}>
+              <TeacherTools
+                grade={currentGrade}
+                presets={activeSimDef.presets}
+                onApplyPreset={handleApplyPreset}
+                discussion={activeSimDef.discussions[currentGrade]}
+                concept={activeSimDef.concepts[currentGrade]}
+                currentInputs={currentInputs}
+                currentMetrics={calculatedResult.metrics}
+                comparisonA={appState.comparisonA}
+                onSaveComparisonA={handleSaveComparisonA}
+                onClearComparison={handleClearComparison}
+              />
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 }

@@ -2,47 +2,60 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #f8fafc;
-  color: #0f172a;
-  font-family: var(--font-inter), -apple-system, system-ui, sans-serif;
+  background: var(--canvas);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
 }
 
-.workspace {
-  display: grid;
-  grid-template-columns: 65% 35%;
-  gap: 20px;
-  padding: 20px 32px;
+.bodyContainer {
+  display: flex;
   flex-grow: 1;
-  min-height: 520px;
+  width: 100%;
 }
 
-.stageContainer {
+.mainContent {
+  flex-grow: 1;
+  padding: 28px 32px;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  gap: 24px;
+  overflow-x: hidden;
 }
 
-.controlPanelContainer {
+.workspaceGrid {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.stageColumn {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  gap: 16px;
+  min-width: 0;
+}
+
+.bottomTeachingContainer {
+  margin-top: 8px;
 }
 
 /* Presentation Mode Fullscreen Layout */
-.presentationModeActive .workspace {
-  grid-template-columns: 1fr !important;
-  padding: 16px !important;
+.presentationModeActive .mainContent {
+  padding: 16px;
 }
 
-.presentationModeActive .stageContainer {
-  min-height: 660px;
+.presentationModeActive .workspaceGrid {
+  display: block;
 }
 
-@media (max-width: 1024px) {
-  .workspace {
-    grid-template-columns: 1fr;
-    padding: 16px;
+@media (max-width: 1180px) {
+  .workspaceGrid {
+    flex-direction: column;
+  }
+
+  .stageColumn {
+    width: 100%;
   }
 }
