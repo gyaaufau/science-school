@@ -14,7 +14,7 @@ export default function MembraneTransportStage({ data, showLabels }: StageProps)
   const insideCount = Math.min(25, Math.ceil(cIn / 4));
 
   return (
-    <svg viewBox="0 0 800 400" className="w-full h-full block">
+    <svg viewBox="0 0 800 400" style={{ width: "100%", height: "100%", display: "block" }}>
       <rect width="800" height="400" fill="#0b0f19" />
 
       {/* Compartment Titles */}

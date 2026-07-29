@@ -21,7 +21,7 @@ export default function EnergyStage({ data, showLabels }: StageProps) {
   const ekRatio = eTotal > 0 ? Math.min(1, ek / eTotal) : 0;
 
   return (
-    <svg viewBox="0 0 800 400" className="w-full h-full block">
+    <svg viewBox="0 0 800 400" style={{ width: "100%", height: "100%", display: "block" }}>
       <rect width="800" height="400" fill="#0b0f19" />
 
       {/* U-Track Path */}

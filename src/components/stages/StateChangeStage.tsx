@@ -15,7 +15,7 @@ export default function StateChangeStage({ data, showLabels }: StageProps) {
   const isGas = temperature >= 100;
 
   return (
-    <svg viewBox="0 0 800 400" className="w-full h-full block">
+    <svg viewBox="0 0 800 400" style={{ width: "100%", height: "100%", display: "block" }}>
       <rect width="800" height="400" fill="#0b0f19" />
 
       {/* Main Container Chamber */}
